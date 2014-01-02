@@ -35,7 +35,7 @@ class FinagleTransport(config: ParrotServerConfig[ParrotRequest, HttpResponse])
   extends ParrotTransport[ParrotRequest, HttpResponse] {
 
   private[this] val builder = ClientBuilder()
-    .codec(Http())
+    .codec(Http().decompressionEnabled(false))
     .hostConnectionCoresize(config.hostConnectionCoresize)
     .hostConnectionIdleTime(Duration(config.hostConnectionIdleTimeInMs, TimeUnit.MILLISECONDS))
     .hostConnectionLimit(config.hostConnectionLimit)
@@ -80,7 +80,7 @@ class FinagleTransport(config: ParrotServerConfig[ParrotRequest, HttpResponse])
     httpRequest.setHeader("Cookie", request.cookies map {
       case (name, value) => name + "=" + value
     } mkString (";"))
-    httpRequest.setHeader("User-Agent", "com.twitter.parrot")
+    httpRequest.setHeader("User-Agent", "com.nytimes.mobile.parrot")
     httpRequest.setHeader("X-Parrot", "true")
     httpRequest.setHeader("X-Forwarded-For", randomIp)
 
